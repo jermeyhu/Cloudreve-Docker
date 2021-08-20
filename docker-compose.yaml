@@ -1,0 +1,29 @@
+version: '3.3'
+
+services: 
+    aria2: 
+        image: p3terx/aria2-pro
+        logging: 
+            options: 
+                max-size: 1m
+        environment: 
+            - RPC_SECRET=<RPC SECRET>
+        ports: 
+            - 6888:6888
+        volumes: 
+            - <PATH TO config>:/config
+            - <PATH TO downloads>:/downloads
+        restart: unless-stopped
+
+    cloudreve: 
+        image: jermey/cloudreve-docker
+        ports: 
+            - 5212:5212
+        depends_on:
+            - aria2
+        volumes: 
+            - <PATH TO uploads>:/cloudreve/uploads
+            - <PATH TO downloads>:/downloads
+            - <PATH TO config>:/cloudreve/config
+            - <PATH TO db>:/cloudreve/db
+            - <PATH TO avatar>:/cloudreve/avatar
